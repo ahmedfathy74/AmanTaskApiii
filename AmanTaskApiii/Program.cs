@@ -15,6 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient(typeof(ITaskRepo<Department>), typeof(TaskRepo<Department>));
 builder.Services.AddTransient(typeof(ITaskRepo<Employee>), typeof(TaskRepo<Employee >));
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 
 builder.Services.AddCors();
 

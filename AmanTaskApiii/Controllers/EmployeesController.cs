@@ -10,8 +10,8 @@ namespace AmanTaskApiii.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly ITaskRepo<Employee> _repoEmployee;
-        public EmployeesController(ITaskRepo<Employee> repoEmployee)
+        private readonly IEmployeeRepository _repoEmployee;
+        public EmployeesController(IEmployeeRepository repoEmployee)
         {
             _repoEmployee = repoEmployee;
         }
@@ -21,6 +21,15 @@ namespace AmanTaskApiii.Controllers
         {
             var Employees = await _repoEmployee.GetAllEntries(new[] { "Department" });
             return Ok(Employees);
+        }
+        [HttpGet("name")]
+        public async Task<ActionResult<EmployeesDto>> GetEmployeeBYDepartment(string name)
+        {
+            if (name == null) return BadRequest();
+            var data = await _repoEmployee.GetAllEmployeeByDepartment(name);
+
+
+            return Ok(data);
         }
         [HttpPost]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
@@ -34,7 +43,7 @@ namespace AmanTaskApiii.Controllers
                 age = DepDto.age,
                 Salary = DepDto.Salary,
                 DepartmentId = DepDto.DepartmentId,
-                Department = GetDepartment.Department
+                //Department = GetDepartment.Department
             };
             await _repoEmployee.AddNewOne(Employee);
             return Ok(Employee);
